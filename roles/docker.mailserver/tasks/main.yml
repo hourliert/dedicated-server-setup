@@ -1,0 +1,3 @@
+---
+- name: Install Docker mailserver
+	debug: msg="Test"

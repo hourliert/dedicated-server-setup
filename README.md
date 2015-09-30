@@ -2,10 +2,13 @@
 Just a reminder on how to setup a dedicated server.
 
 ## Server
-KS-3 from https://www.kimsufi.com/en/
+Dedibox XC 2015
 
 ## How 
-Docker. Only Docker!
+Ansible & Docker.
+
+`ansible-playbook deploy.yml -i hosts --ask-become-pass`
+
 
 ## Features
 * Mail server https://github.com/tomav/docker-mailserver

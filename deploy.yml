@@ -1,0 +1,15 @@
+---
+- name: Install Docker Master
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - server.base
+    - docker.ubuntu
+  tasks:
+    - name: Add the remote user to docker group
+      user:
+        name: "{{ user }}"
+        groups: docker
+        append: yes

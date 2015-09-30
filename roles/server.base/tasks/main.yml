@@ -1,0 +1,22 @@
+---
+- name: Create data structure
+  file: path="{{ root_data_foler }}" owner=root group=root mode=0755 state=directory
+
+  # Make sure system is up to date.
+- name: Update System Packages List and Installed Packages
+  sudo: yes
+  apt: update_cache=yes upgrade=full
+
+# Install required vanilla software.
+- name: Install Required Software
+  sudo: yes
+  apt: name={{item}} state=present
+  with_items: [ 'build-essential', 'apt-transport-https' ]
+
+- name: Install Necessary Packages
+  sudo: yes
+  apt: name={{item}} state=present
+  with_items: [ 'make', 'gcc']
+
+- name: Install Linux Headers
+  shell: "apt-get install linux-headers-$(uname -r)"
