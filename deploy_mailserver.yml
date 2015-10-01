@@ -1,0 +1,16 @@
+---
+- name: Install Docker mailserver
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.mailserver
+  vars_prompt:
+    - name: "thomas_hourlier_password"
+      prompt: "thomas.hourlier@cnode.fr password"
+      private: yes
+
+    - name: "techno_watch_password"
+      prompt: "techno.watch@cnode.fr password"
+      private: yes

@@ -1,0 +1,7 @@
+user: "thomashourlier"
+root_data_foler: "/data"
+
+mail_server_dir: "/data/mailserver"
+tld: "cnode.fr"
+thomas_hourlier_login: "thomas.hourlier"
+techno_watch_login: "techno.watch"

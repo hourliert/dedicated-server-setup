@@ -1,0 +1,5 @@
+#========= DOCKER ===========
+#docker options
+# -g change the docker runtime directory
+docker_opts: "-g /data/docker/"
+pip_version_docker_py: 1.1.0

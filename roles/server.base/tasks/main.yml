@@ -2,7 +2,7 @@
 - name: Create data structure
   file: path="{{ root_data_foler }}" owner=root group=root mode=0755 state=directory
 
-  # Make sure system is up to date.
+# Make sure system is up to date.
 - name: Update System Packages List and Installed Packages
   sudo: yes
   apt: update_cache=yes upgrade=full

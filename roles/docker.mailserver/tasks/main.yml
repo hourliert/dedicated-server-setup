@@ -1,3 +1,46 @@
 ---
-- name: Install Docker mailserver
-	debug: msg="Test"
+- name: Ensure mailserver dir exists
+  file: path="{{mail_server_dir}}" state=directory
+
+- name: Ensure mailserver postfix dirs exists
+  file: path="{{mail_server_dir}}/{{item}}" state=directory
+  with_items:
+     - postfix
+     - spamassassin
+     - mail
+
+- name: Ensure mailserver postfix ssl dir exists
+  file: path="{{mail_server_dir}}/postfix/ssl" state=directory
+
+- name: Copy ssl self-signed certificates
+  copy: 
+    src: ssl/
+    dest: "{{mail_server_dir}}/postfix/ssl/"
+
+- name: Copy postfix configuration
+  template:
+    src: accounts.cf
+    dest: "{{mail_server_dir}}/postfix/accounts.cf"
+
+- name: Installing mailserver
+  docker:
+    name: mail
+    image: hourliert/docker-mailserver
+    state: reloaded
+    restart_policy: always
+    hostname: mail
+    domainname: cnode.fr
+    expose: 
+      - 25
+      - 143
+      - 587
+      - 993
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - "{{mail_server_dir}}/spamassassin:/tmp/spamassassin/"
+      - "{{mail_server_dir}}/postfix:/tmp/postfix/"
+      - "{{mail_server_dir}}/mail:/var/mail"
