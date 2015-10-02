@@ -1,7 +1,51 @@
+# global
 user: "thomashourlier"
 root_data_foler: "/data"
 
-mail_server_dir: "/data/mailserver"
-tld: "cnode.fr"
-thomas_hourlier_login: "thomas.hourlier"
-techno_watch_login: "techno.watch"
+# nginx
+nginx_data: "/data/nginx"
+
+# mailserver
+mail_server_data: "/data/mailserver"
+mail_hostname: "mail"
+mail_tld: "cnode.fr"
+smtp_thomas_hourlier_login: "thomas.hourlier"
+smtp_techno_watch_login: "techno.watch"
+smtp_gitlab_login: "gitlab"
+
+# postgresql
+postgresql_port: 5432
+postgresql_root_password: xxxxxxxx
+postgresql_data: "/data/postgresql"
+
+# redis
+redis_port: 6379
+
+# gitlab
+#where the gitlab data will be stored
+gitlab_data: "/data/gitlab"
+gitlab_secrets_db_key_pass: xxxxxxxx
+#name of gitlab db
+gitlab_db_name: gitlabhq_production
+#username used to create gitlab db
+gitlab_db_user: gitlab
+#user password
+gitlab_db_password: xxxxxxxx
+#gitlab hostname
+gitlab_hostname: git.cnode.fr
+#mail configuration
+gitlab_smtp_user: gitlab@cnode.fr
+gitlab_smtp_host: mail.cnode.fr
+gitlab_smtp_domain: cnode.la
+gitlab_imap_host: mail.cnode.fr
+gitlab_email: noreply@cnode.fr
+gitlab_email_reply_to: noreply@cnode.fr
+#gitlab backup
+gitlab_backup: daily
+gitlab_backup_time: 04:00
+
+# gitlab multiple ci runner
+gitlab_ci_url: "https://git.cnode.fr/ci"
+gitlab_ci_multi_data: "/data/gitlab-runner"
+runner_concurent: 1
+runner_name: "Self hosted runner"

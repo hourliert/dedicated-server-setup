@@ -1,2 +1,3 @@
-{{thomas_hourlier_login}}@{{tld}}|{{thomas_hourlier_password}}
-{{techno_watch_login}}@{{tld}}|{{techno_watch_password}}
+{{smtp_thomas_hourlier_login}}@{{mail_tld}}|{{smtp_thomas_hourlier_password}}
+{{smtp_techno_watch_login}}@{{mail_tld}}|{{smtp_techno_watch_password}}
+{{smtp_gitlab_login}}@{{mail_tld}}|{{smtp_gitlab_password}}

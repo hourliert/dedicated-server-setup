@@ -7,10 +7,14 @@
   roles:
     - docker.mailserver
   vars_prompt:
-    - name: "thomas_hourlier_password"
+    - name: "smtp_thomas_hourlier_password"
       prompt: "thomas.hourlier@cnode.fr password"
       private: yes
 
-    - name: "techno_watch_password"
+    - name: "smtp_techno_watch_password"
       prompt: "techno.watch@cnode.fr password"
+      private: yes
+
+    - name: "smtp_gitlab_password"
+      prompt: "gitlab@cnode.fr password"
       private: yes

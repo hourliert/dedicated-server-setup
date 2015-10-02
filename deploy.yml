@@ -7,6 +7,7 @@
   roles:
     - server.base
     - docker.ubuntu
+    - docker.nginx-proxy
   tasks:
     - name: Add the remote user to docker group
       user:

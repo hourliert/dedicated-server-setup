@@ -1,0 +1,22 @@
+---
+- name: Install Postgresql via Docker
+  docker:
+    state: reloaded
+    name: postgresql
+    image: postgres
+    restart_policy: always
+    ports:
+      - "{{ postgresql_port }}:5432"
+    env:
+      POSTGRES_PASSWORD: "{{ postgresql_root_password }}"
+    volumes:
+      - "{{ postgresql_data }}:/var/lib/mysql"
+
+
+- name: Install PostgreSQL Python Module dependencies
+  apt:
+    name: python-psycopg2
+    state: present
+
+- name: Waiting for PostgreSQL connection
+  wait_for: port="{{ postgresql_port }}" delay=1

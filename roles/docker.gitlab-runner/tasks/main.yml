@@ -1,0 +1,20 @@
+---
+- name: Install Gitlab Multiple Ci Runner via Docker
+  docker:
+    state: reloaded
+    name: ci-runner
+    image: gitlab/gitlab-runner
+    restart_policy: always
+    volumes:
+      - /var/run/docker.sock:/run/docker.sock
+      - "{{gitlab_ci_multi_data}}:/etc/gitlab-runner"
+
+- name: Register the runner
+  shell: >
+    docker exec ci-runner gitlab-ci-multi-runner register
+    --non-interactive
+    --url "{{gitlab_ci_url}}"
+    --registration-token "{{runner_token}}"
+    --description "{{runner_name}}"
+    --executor "docker"
+    --docker-image "node:4.1"

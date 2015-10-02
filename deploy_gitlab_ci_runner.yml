@@ -1,0 +1,11 @@
+---
+- name: Install Gitlab Ci Multi Runner
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.gitlab-runner
+  vars_prompt:
+    - name: "runner_token"
+      prompt: "Runner Token"

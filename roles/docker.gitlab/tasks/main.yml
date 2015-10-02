@@ -1,0 +1,60 @@
+---
+- name: Create Gitlab DB
+  postgresql_db:
+    login_host: "0.0.0.0"
+    login_password: "{{ postgresql_root_password }}"
+    login_user: postgres
+    name: "{{ gitlab_db_name }}"
+    state: present
+
+- name: Create Gitlab DB User
+  postgresql_user:
+    login_host: "0.0.0.0"
+    login_user: postgres
+    login_password: "{{ postgresql_root_password }}"
+    name: "{{ gitlab_db_user }}"
+    db: "{{gitlab_db_name}}"
+    password: "{{ gitlab_db_password }}"
+    priv: "ALL"
+    role_attr_flags: CREATEDB
+
+- name: Copy ssl certificates
+  copy: 
+    src: ssl/gitlab/
+    dest: "{{nginx_data}}/ssl/"
+
+- name: Install Gitlab via Docker
+  docker:
+    state: reloaded
+    name: gitlab
+    image: sameersbn/gitlab
+    restart_policy: always
+    links:
+      - "redis:redisio"
+      - "postgresql:postgresql"
+    ports:
+      - "10022:22"
+      - "10080:80"
+    env:
+      VIRTUAL_HOST: "{{gitlab_hostname}}"
+      GITLAB_HOST: "{{ gitlab_hostname }}"
+      GITLAB_PORT: 443
+      GITLAB_HTTPS: true
+      GITLAB_SSH_PORT: 10022
+      GITLAB_SECRETS_DB_KEY_BASE: "{{ gitlab_secrets_db_key_pass }}"
+      DB_NAME: "{{ gitlab_db_name }}"
+      DB_USER: "{{ gitlab_db_user }}"
+      DB_PASS: "{{ gitlab_db_password }}"
+      SMTP_USER: "{{ gitlab_smtp_user }}"
+      SMTP_PASS: "{{ smtp_gitlab_password }}"
+      IMAP_USER: "{{ gitlab_smtp_user }}"
+      IMAP_PASS: "{{ smtp_gitlab_password }}"
+      IMAP_HOST: "{{ gitlab_imap_host }}"
+      SMTP_HOST: "{{ gitlab_smtp_host }}"
+      SMTP_DOMAIN: "{{ gitlab_smtp_domain }}"
+      GITLAB_EMAIL: "{{ gitlab_email }}"
+      GITLAB_EMAIL_REPLY_TO: "{{ gitlab_email_reply_to }}"
+      GITLAB_BACKUPS: "{{ gitlab_backup }}"
+      GITLAB_BACKUP_TIME: "{{ gitlab_backup_time }}"
+    volumes:
+      - "{{ gitlab_data }}:/home/git/data"

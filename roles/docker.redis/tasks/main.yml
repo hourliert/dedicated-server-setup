@@ -1,0 +1,9 @@
+---
+- name: Install Redis via Docker
+  docker:
+    state: reloaded
+    name: redis
+    image: redis
+    restart_policy: always
+    ports:
+      - "{{ redis_port }}:6379"

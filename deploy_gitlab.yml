@@ -1,0 +1,14 @@
+---
+- name: Install Gitlab
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.postgresql
+    - docker.redis
+    - docker.gitlab
+  vars_prompt:
+    - name: "smtp_gitlab_password"
+      prompt: "gitlab@cnode.fr password"
+      private: yes

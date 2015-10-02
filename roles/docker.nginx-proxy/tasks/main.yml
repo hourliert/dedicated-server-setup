@@ -1,0 +1,31 @@
+---
+- name: Ensure nginx data dir exists
+  file: path="{{nginx_data}}" state=directory
+
+- name: Ensure nginx ssl dirs exists
+  file: path="{{nginx_data}}/{{item}}" state=directory
+  with_items:
+     - ssl
+     - conf
+
+- name: Copy default configuration
+  copy:
+    src: proxy.conf
+    dest: "{{nginx_data}}/conf/proxy.conf"
+
+- name: Install nginx-proxy
+  docker:
+    name: nginx-proxy
+    image: jwilder/nginx-proxy
+    state: reloaded
+    restart_policy: always
+    expose: 
+      - 80
+      - 443
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "{{nginx_data}}/ssl:/etc/nginx/certs"
+      - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"

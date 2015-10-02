@@ -1,26 +1,30 @@
 ---
 - name: Ensure mailserver dir exists
-  file: path="{{mail_server_dir}}" state=directory
+  file: path="{{mail_server_data}}" state=directory
 
 - name: Ensure mailserver postfix dirs exists
-  file: path="{{mail_server_dir}}/{{item}}" state=directory
+  file: path="{{mail_server_data}}/{{item}}" state=directory
   with_items:
      - postfix
      - spamassassin
      - mail
 
 - name: Ensure mailserver postfix ssl dir exists
-  file: path="{{mail_server_dir}}/postfix/ssl" state=directory
+  file: path="{{mail_server_data}}/postfix/ssl" state=directory
 
 - name: Copy ssl self-signed certificates
   copy: 
-    src: ssl/
-    dest: "{{mail_server_dir}}/postfix/ssl/"
+    src: ssl/mailserver/
+    dest: "{{mail_server_data}}/postfix/ssl/"
 
 - name: Copy postfix configuration
   template:
-    src: accounts.cf
-    dest: "{{mail_server_dir}}/postfix/accounts.cf"
+    src: "{{item}}"
+    dest: "{{mail_server_data}}/postfix/{{item}}"
+  with_items:
+   - accounts.cf
+   - virtual
+
 
 - name: Installing mailserver
   docker:
@@ -28,8 +32,8 @@
     image: hourliert/docker-mailserver
     state: reloaded
     restart_policy: always
-    hostname: mail
-    domainname: cnode.fr
+    hostname: "{{mail_hostname}}"
+    domainname: "{{mail_tld}}"
     expose: 
       - 25
       - 143
@@ -41,6 +45,6 @@
       - "587:587"
       - "993:993"
     volumes:
-      - "{{mail_server_dir}}/spamassassin:/tmp/spamassassin/"
-      - "{{mail_server_dir}}/postfix:/tmp/postfix/"
-      - "{{mail_server_dir}}/mail:/var/mail"
+      - "{{mail_server_data}}/spamassassin:/tmp/spamassassin/"
+      - "{{mail_server_data}}/postfix:/tmp/postfix/"
+      - "{{mail_server_data}}/mail:/var/mail"

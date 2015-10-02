@@ -1,0 +1,3 @@
+postmaster@{{mail_tld}} {{smtp_thomas_hourlier_login}}@{{mail_tld}}
+hostmaster@{{mail_tld}} {{smtp_thomas_hourlier_login}}@{{mail_tld}}
+webmaster@{{mail_tld}} {{smtp_thomas_hourlier_login}}@{{mail_tld}}
