@@ -13,10 +13,18 @@
     src: proxy.conf
     dest: "{{nginx_data}}/conf/proxy.conf"
 
+- name: Ensure docker-gen dir exists
+  file: path="{{docker_gen_data}}" state=directory  
+
+- name: Copy docker-gen nginx template
+  copy:
+    src: nginx.tmpl
+    dest: "{{docker_gen_data}}/nginx.tmpl"
+
 - name: Install nginx-proxy
   docker:
-    name: nginx-proxy
-    image: jwilder/nginx-proxy
+    name: nginx
+    image: nginx
     state: reloaded
     restart_policy: always
     expose: 
@@ -26,6 +34,19 @@
       - "80:80"
       - "443:443"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /tmp/nginx:/etc/nginx/conf.d
       - "{{nginx_data}}/ssl:/etc/nginx/certs"
       - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"
+
+- name: Install docker-gen
+  docker:
+    name: docker-gen
+    image: jwilder/docker-gen
+    state: reloaded
+    restart_policy: always
+    command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    volumes_from:
+      - nginx
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "{{docker_gen_data}}:/etc/docker-gen/templates"

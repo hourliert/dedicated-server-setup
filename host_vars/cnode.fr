@@ -2,6 +2,9 @@
 user: "thomashourlier"
 root_data_foler: "/data"
 
+# docker-gen
+docker_gen_data: "/data/docker-gen"
+
 # nginx
 nginx_data: "/data/nginx"
 
