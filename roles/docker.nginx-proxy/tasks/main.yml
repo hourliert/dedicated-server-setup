@@ -7,6 +7,7 @@
   with_items:
      - ssl
      - conf
+     - vhost.d
 
 - name: Copy default configuration
   copy:
@@ -37,6 +38,7 @@
       - /tmp/nginx:/etc/nginx/conf.d
       - "{{nginx_data}}/ssl:/etc/nginx/certs"
       - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"
+      - "{{nginx_data}}/vhost.d:/etc/nginx/vhost.d"
 
 - name: Install docker-gen
   docker:

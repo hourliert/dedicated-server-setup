@@ -1,4 +1,14 @@
 ---
+- name: Ensure nginx ssl dirs exists
+  file: path="{{nginx_data}}/{{item}}" state=directory
+  with_items:
+     - vhost.d
+
+- name: Copy vhost configuration
+  copy:
+    src: cloud.cnode.fr
+    dest: "{{nginx_data}}/vhost.d/cloud.cnode.fr"
+
 - name: Create OwnCloud DB
   postgresql_db:
     login_host: "0.0.0.0"
