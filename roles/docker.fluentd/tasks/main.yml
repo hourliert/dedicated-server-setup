@@ -1,0 +1,23 @@
+---
+- name: Ensure fluentd dir exists
+  file: path="{{fluentd_data}}/log" state=directory
+
+- name: Copy fluentd configuration
+  copy:
+    src: fluent.conf
+    dest: "{{fluentd_data}}/fluent.conf"
+
+- name: Install fluentd with docker
+  docker:
+    name: fluent
+    image: fluent/fluentd
+    state: reloaded
+    restart_policy: always
+    ports:
+      - "24224:24224"
+    env:
+      FLUENTD_CONF: "fluent.conf"
+    volumes:
+      - "{{fluentd_data}}/log:/fluentd/log"
+
+# partial support. waiting for ansible 2.0 to support log_driver http://docs.ansible.com/ansible/docker_module.html

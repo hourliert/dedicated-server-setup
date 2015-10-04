@@ -2,6 +2,12 @@
 user: "thomashourlier"
 root_data_foler: "/data"
 
+# cadvisor
+cadvisor_host: advisor.cnode.fr
+
+# fluentd
+fluentd_data: "/data/fluentd"
+
 # docker-gen
 docker_gen_data: "/data/docker-gen"
 

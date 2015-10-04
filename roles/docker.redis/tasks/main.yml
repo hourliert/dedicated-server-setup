@@ -5,5 +5,5 @@
     name: redis
     image: redis
     restart_policy: always
-    ports:
-      - "{{ redis_port }}:6379"
+    # ports:
+    #   - "{{ redis_port }}:6379"

@@ -7,7 +7,9 @@
   roles:
     - server.base
     - docker.ubuntu
+    # - docker.fluentd
     - docker.nginx-proxy
+    - docker.cadvisor
   tasks:
     - name: Add the remote user to docker group
       user:

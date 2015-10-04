@@ -47,6 +47,7 @@
       DB_PASS: "{{ gitlab_db_password }}"
       SMTP_USER: "{{ gitlab_smtp_user }}"
       SMTP_PASS: "{{ smtp_gitlab_password }}"
+      IMAP_ENABLED: false
       IMAP_USER: "{{ gitlab_smtp_user }}"
       IMAP_PASS: "{{ smtp_gitlab_password }}"
       IMAP_HOST: "{{ gitlab_imap_host }}"
