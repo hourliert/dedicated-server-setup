@@ -1,0 +1,8 @@
+---
+- name: Install Torrent client
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.torrent

@@ -1,0 +1,17 @@
+---
+- name: Ensure Torrent dir exists
+  file: path="{{torrent_data}}" state=directory
+
+- name: Install Torrent client via Docker
+  docker:
+    name: torrent
+    state: reloaded
+    restart_policy: always
+    image: kfei/docktorrent
+    tty: true
+    env:
+      VIRTUAL_HOST: "{{torrent_hostname}}"
+      UPLOAD_RATE: "{{torrent_upload}}"
+      DOWNLOAD_RATE: "{{torrent_download}}"
+    volumes:
+      - "{{torrent_data}}:/rtorrent"

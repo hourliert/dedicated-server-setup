@@ -1,0 +1,8 @@
+---
+- name: Install OpenVPN
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.openvpn

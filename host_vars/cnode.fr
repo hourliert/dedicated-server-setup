@@ -65,3 +65,18 @@ owncloud_data: /data/owncloud
 owncloud_db_name: owncloud
 owncloud_db_user: owncloud
 owncloud_db_password: xxxxx
+
+# OpenVPN
+openvpn_data: /data/openvpn
+openvpn_hostname: vpn.cloud.fr
+client_name: Thomas-Macbook
+
+# torrent
+torrent_data: /data/torrent
+torrent_hostname: torrent.cnode.fr
+torrent_upload: 512
+torrent_download: 5120
+
+# plex
+plex_data: /data/plex
+plex_hostname: plex.cnode.fr

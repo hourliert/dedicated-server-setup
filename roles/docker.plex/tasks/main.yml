@@ -1,0 +1,23 @@
+---
+- name: Ensure Plex dir exists
+  file: path="{{plex_data}}" state=directory owner=797 group=797
+
+- name: Install Plex via docker
+  docker:
+    state: reloaded
+    restart_policy: always
+    net: host
+    name: plex
+    image: wernight/plex-media-server
+    ports:
+      - "32400:32400"
+    volumes:
+      - "{{plex_data}}:/config"
+      - "{{torrent_data}}:/media"
+
+# first run : ssh -L 32400:localhost:32400 -N thomashourlier@cnode.fr
+# loging to http://localhost:32400/web, check remote access
+# restart plex container
+# recheck remote acces
+# close tunel
+# Plex serveur is up
