@@ -1,45 +1,45 @@
 # global
-user: "thomashourlier"
-root_data_foler: "/data"
+user: thomashourlier
+root_data_foler: /data
 
 # cadvisor
 cadvisor_host: advisor.cnode.fr
 
 # fluentd
-fluentd_data: "/data/fluentd"
+fluentd_data: /data/fluentd
 
 # docker-gen
-docker_gen_data: "/data/docker-gen"
+docker_gen_data: /data/docker-gen
 
 # nginx
-nginx_data: "/data/nginx"
+nginx_data: /data/nginx
 
 # mailserver
-mail_server_data: "/data/mailserver"
-mail_hostname: "mail"
-mail_tld: "cnode.fr"
-smtp_thomas_hourlier_login: "thomas.hourlier"
-smtp_techno_watch_login: "techno.watch"
-smtp_gitlab_login: "gitlab"
+mail_server_data: /data/mailserver
+mail_hostname: mail
+mail_tld: cnode.fr
+smtp_thomas_hourlier_login: thomas.hourlier
+smtp_techno_watch_login: techno.watch
+smtp_gitlab_login: gitlab
 
 # postgresql
 postgresql_port: 5432
-postgresql_root_password: xxxxxxxx
-postgresql_data: "/data/postgresql"
+postgresql_root_password: xxxxx
+postgresql_data: /data/postgresql
 
 # redis
 redis_port: 6379
 
 # gitlab
 #where the gitlab data will be stored
-gitlab_data: "/data/gitlab"
-gitlab_secrets_db_key_pass: xxxxxxxx
+gitlab_data: /data/gitlab
+gitlab_secrets_db_key_pass: xxxxx
 #name of gitlab db
 gitlab_db_name: gitlabhq_production
 #username used to create gitlab db
 gitlab_db_user: gitlab
 #user password
-gitlab_db_password: xxxxxxxx
+gitlab_db_password: xxxxx
 #gitlab hostname
 gitlab_hostname: git.cnode.fr
 #mail configuration
@@ -54,7 +54,14 @@ gitlab_backup: daily
 gitlab_backup_time: 04:00
 
 # gitlab multiple ci runner
-gitlab_ci_url: "https://git.cnode.fr/ci"
-gitlab_ci_multi_data: "/data/gitlab-runner"
+gitlab_ci_url: https://git.cnode.fr/ci
+gitlab_ci_multi_data: /data/gitlab-runner
 runner_concurent: 1
-runner_name: "Self hosted runner"
+runner_name: Self hosted runner
+
+# owncloud
+owncloud_hostname: cloud.cnode.fr
+owncloud_data: /data/owncloud
+owncloud_db_name: owncloud
+owncloud_db_user: owncloud
+owncloud_db_password: xxxxx

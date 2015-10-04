@@ -34,7 +34,6 @@
       - "postgresql:postgresql"
     ports:
       - "10022:22"
-      - "10080:80"
     env:
       VIRTUAL_HOST: "{{gitlab_hostname}}"
       GITLAB_HOST: "{{ gitlab_hostname }}"

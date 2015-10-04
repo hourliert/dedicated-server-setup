@@ -1,0 +1,9 @@
+---
+- name: Install Docker Owncloud
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.postgresql
+    - docker.owncloud

@@ -1,7 +1,7 @@
 ---
 - name: Install Postgresql via Docker
   docker:
-    state: reloaded
+    state: started
     name: postgresql
     image: postgres
     restart_policy: always
@@ -10,7 +10,7 @@
     env:
       POSTGRES_PASSWORD: "{{ postgresql_root_password }}"
     volumes:
-      - "{{ postgresql_data }}:/var/lib/mysql"
+      - "{{ postgresql_data }}:/var/lib/postgresql/data"
 
 
 - name: Install PostgreSQL Python Module dependencies

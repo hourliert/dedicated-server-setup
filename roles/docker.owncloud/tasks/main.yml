@@ -1,0 +1,44 @@
+---
+- name: Create OwnCloud DB
+  postgresql_db:
+    login_host: "0.0.0.0"
+    login_password: "{{ postgresql_root_password }}"
+    login_user: postgres
+    name: "{{ owncloud_db_name }}"
+    state: present
+
+- name: Create Owncloud DB User
+  postgresql_user:
+    login_host: "0.0.0.0"
+    login_user: postgres
+    login_password: "{{ postgresql_root_password }}"
+    name: "{{ owncloud_db_user }}"
+    db: "{{owncloud_db_name}}"
+    password: "{{ owncloud_db_password }}"
+    priv: "ALL"
+    role_attr_flags: CREATEDB
+
+- name: Copy ssl certificates
+  copy: 
+    src: ssl/owncloud/
+    dest: "{{nginx_data}}/ssl/"
+
+- name: Install Owncloud via docker
+  docker:
+    name: owncloud
+    image: jchaney/owncloud
+    state: reloaded
+    restart_policy: always
+    expose:
+      - 80
+    links:
+      - postgresql:db
+    env:
+      VIRTUAL_HOST: "{{owncloud_hostname}}"
+      OWNCLOUD_IN_ROOTPATH: 1
+      OWNCLOUD_SERVERNAME: "{{ owncloud_hostname }}"
+    volumes:
+      - "{{ owncloud_data }}:/var/www/owncloud/data"
+      - "{{ owncloud_data }}/additional_apps:/var/www/owncloud/apps_persistent"
+      - "{{ owncloud_data }}/config:/owncloud"
+
