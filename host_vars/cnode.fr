@@ -2,6 +2,9 @@
 user: thomashourlier
 root_data_foler: /data
 
+# dockerui
+dockerui_hostname: docker.cnode.fr
+
 # cadvisor
 cadvisor_host: advisor.cnode.fr
 

@@ -1,0 +1,29 @@
+---
+- name: Ensure nginx htpasswd dirs exists
+  file: path="{{nginx_data}}/{{item}}" state=directory
+  with_items:
+     - htpasswd
+     - vhost.d
+
+- name: Copy htpasswd file
+  copy:
+    src: htpasswd_docker.cnode.fr
+    dest: "{{nginx_data}}/htpasswd/docker.cnode.fr"
+
+- name: Copy htpasswd file
+  copy:
+    src: vhost_docker.cnode.fr
+    dest: "{{nginx_data}}/vhost.d/docker.cnode.fr"
+
+- name: Install docker ui via docker
+  docker:
+    state: reloaded
+    restart_policy: always
+    name: dockerui
+    image: dockerui/dockerui
+    expose:
+      - 9000
+    env:
+      VIRTUAL_HOST: "{{dockerui_hostname}}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

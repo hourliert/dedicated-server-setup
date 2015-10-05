@@ -8,6 +8,7 @@
      - ssl
      - conf
      - vhost.d
+     - htpasswd
 
 - name: Copy default configuration
   copy:
@@ -39,6 +40,7 @@
       - "{{nginx_data}}/ssl:/etc/nginx/certs"
       - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"
       - "{{nginx_data}}/vhost.d:/etc/nginx/vhost.d"
+      - "{{nginx_data}}/htpasswd:/etc/nginx/htpasswd"
 
 - name: Install docker-gen
   docker:
