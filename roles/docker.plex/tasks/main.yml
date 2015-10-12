@@ -1,4 +1,10 @@
 ---
+- name: Create plex group
+  group: name=plex state=present gid=797
+
+- name: Create plex user
+  user: name=plex shell=/bin/bash uid=797 group=plex groups=www-data append=yes state=present
+
 - name: Ensure Plex dir exists
   file: path="{{plex_data}}" state=directory owner=797 group=797
 
