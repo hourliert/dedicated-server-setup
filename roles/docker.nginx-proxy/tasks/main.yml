@@ -28,7 +28,9 @@
     name: nginx
     image: nginx
     state: reloaded
+    pull: always
     restart_policy: always
+    # log_driver: fluentd
     expose: 
       - 80
       - 443
@@ -47,7 +49,9 @@
     name: docker-gen
     image: jwilder/docker-gen
     state: reloaded
+    pull: always
     restart_policy: always
+    # log_driver: fluentd
     command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:
       - nginx

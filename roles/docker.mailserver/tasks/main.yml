@@ -31,6 +31,7 @@
     name: mail
     image: hourliert/docker-mailserver
     state: reloaded
+    pull: always
     restart_policy: always
     hostname: "{{mail_hostname}}"
     domainname: "{{mail_tld}}"

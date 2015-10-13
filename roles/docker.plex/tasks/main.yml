@@ -15,6 +15,7 @@
     net: host
     name: plex
     image: wernight/plex-media-server
+    pull: always
     ports:
       - "32400:32400"
     volumes:

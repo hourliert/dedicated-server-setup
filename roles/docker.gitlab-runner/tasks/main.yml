@@ -5,6 +5,7 @@
     name: ci-runner
     image: gitlab/gitlab-runner
     restart_policy: always
+    pull: always
     volumes:
       - /var/run/docker.sock:/run/docker.sock
       - "{{gitlab_ci_multi_data}}:/etc/gitlab-runner"

@@ -13,6 +13,7 @@
     image: fluent/fluentd
     state: reloaded
     restart_policy: always
+    pull: always
     ports:
       - "24224:24224"
     env:

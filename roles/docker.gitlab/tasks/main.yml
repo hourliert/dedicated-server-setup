@@ -29,6 +29,7 @@
     name: gitlab
     image: sameersbn/gitlab
     restart_policy: always
+    pull: always
     links:
       - "redis:redisio"
       - "postgresql:postgresql"

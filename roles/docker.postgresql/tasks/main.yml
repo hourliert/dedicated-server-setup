@@ -5,6 +5,7 @@
     name: postgresql
     image: postgres
     restart_policy: always
+    pull: always
     ports:
       - "{{ postgresql_port }}:5432"
     env:

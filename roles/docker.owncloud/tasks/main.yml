@@ -39,6 +39,7 @@
     image: jchaney/owncloud
     state: reloaded
     restart_policy: always
+    pull: always
     expose:
       - 80
     links:
