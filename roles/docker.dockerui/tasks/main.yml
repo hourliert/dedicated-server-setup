@@ -23,6 +23,7 @@
     image: dockerui/dockerui
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.dockerui"
     expose:
       - 9000
     env:

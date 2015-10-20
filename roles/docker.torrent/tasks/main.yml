@@ -10,6 +10,7 @@
     image: kfei/docktorrent
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.torrent"
     tty: true
     ports:
       - "45566:45566"

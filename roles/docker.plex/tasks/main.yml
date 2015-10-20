@@ -17,6 +17,7 @@
     image: wernight/plex-media-server
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.plex"
     ports:
       - "32400:32400"
     volumes:

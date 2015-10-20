@@ -10,6 +10,7 @@
     restart_policy: always
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.openvpn"
     ports:
       - "1194:1194/udp"
     cap_add:

@@ -31,6 +31,7 @@
     restart_policy: always
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.gitlab"
     links:
       - "redis:redisio"
       - "postgresql:postgresql"

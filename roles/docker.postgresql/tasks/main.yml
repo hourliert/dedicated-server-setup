@@ -7,6 +7,7 @@
     restart_policy: always
     pull: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.postgresql"
     ports:
       - "{{ postgresql_port }}:5432"
     env:

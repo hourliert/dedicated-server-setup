@@ -6,12 +6,15 @@
   user: name=fluentd shell=/bin/bash uid=2422 group=fluentd append=yes state=present
 
 - name: Ensure fluentd dir exists
-  file: path="{{fluentd_data}}/log" state=directory owner=2422 group=2422
+  file: path="{{fluentd_data}}/{{item}}" state=directory owner=2422 group=2422
+  with_items:
+    - log
+    - etc
 
 - name: Copy fluentd configuration
   copy:
     src: fluent.conf
-    dest: "{{fluentd_data}}/fluent.conf"
+    dest: "{{fluentd_data}}/etc/cnode.conf"
 
 - name: Install fluentd with docker
   docker:
@@ -23,6 +26,7 @@
     ports:
       - "24224:24224"
     env:
-      FLUENTD_CONF: "fluent.conf"
+      FLUENTD_CONF: "cnode.conf"
     volumes:
+      - "{{fluentd_data}}/etc:/fluentd/etc"
       - "{{fluentd_data}}/log:/fluentd/log"

@@ -34,6 +34,7 @@
     pull: always
     restart_policy: always
     log_driver: fluentd
+    log_opt: "fluentd-tag=docker.mailserver"
     hostname: "{{mail_hostname}}"
     domainname: "{{mail_tld}}"
     expose: 
