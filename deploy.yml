@@ -7,7 +7,7 @@
   roles:
     - server.base
     - docker.ubuntu
-    # - docker.fluentd
+    - docker.fluentd
     - docker.nginx-proxy
     - docker.dockerui
     - docker.cadvisor

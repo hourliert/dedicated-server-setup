@@ -9,6 +9,7 @@
     image: kylemanna/openvpn
     restart_policy: always
     pull: always
+    log_driver: fluentd
     ports:
       - "1194:1194/udp"
     cap_add:

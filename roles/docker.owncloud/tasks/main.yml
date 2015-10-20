@@ -40,6 +40,7 @@
     state: reloaded
     restart_policy: always
     pull: always
+    log_driver: fluentd
     expose:
       - 80
     links:

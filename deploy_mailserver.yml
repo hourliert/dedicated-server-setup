@@ -16,5 +16,5 @@
       private: yes
 
     - name: "smtp_gitlab_password"
-      prompt: "gitlab@cnode.fr password"
+      prompt: "git@cnode.fr password"
       private: yes

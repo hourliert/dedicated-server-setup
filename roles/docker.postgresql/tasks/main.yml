@@ -6,6 +6,7 @@
     image: postgres
     restart_policy: always
     pull: always
+    log_driver: fluentd
     ports:
       - "{{ postgresql_port }}:5432"
     env:

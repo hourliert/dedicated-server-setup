@@ -22,7 +22,7 @@
     name: dockerui
     image: dockerui/dockerui
     pull: always
-    # log_driver: fluentd
+    log_driver: fluentd
     expose:
       - 9000
     env:

@@ -9,6 +9,7 @@
     restart_policy: always
     image: kfei/docktorrent
     pull: always
+    log_driver: fluentd
     tty: true
     ports:
       - "45566:45566"

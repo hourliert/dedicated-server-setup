@@ -23,7 +23,7 @@ mail_hostname: mail
 mail_tld: cnode.fr
 smtp_thomas_hourlier_login: thomas.hourlier
 smtp_techno_watch_login: techno.watch
-smtp_gitlab_login: gitlab
+smtp_gitlab_login: git
 
 # postgresql
 postgresql_port: 5432
@@ -46,7 +46,7 @@ gitlab_db_password: xxxxx
 #gitlab hostname
 gitlab_hostname: git.cnode.fr
 #mail configuration
-gitlab_smtp_user: gitlab@cnode.fr
+gitlab_smtp_user: git@cnode.fr
 gitlab_smtp_host: mail.cnode.fr
 gitlab_smtp_domain: cnode.la
 gitlab_imap_host: mail.cnode.fr

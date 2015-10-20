@@ -33,6 +33,7 @@
     state: reloaded
     pull: always
     restart_policy: always
+    log_driver: fluentd
     hostname: "{{mail_hostname}}"
     domainname: "{{mail_tld}}"
     expose: 

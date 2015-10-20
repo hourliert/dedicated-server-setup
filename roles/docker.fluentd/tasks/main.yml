@@ -1,6 +1,12 @@
 ---
+- name: Create fluentd group
+  group: name=fluentd gid=2422 state=present
+
+- name: Create fluentd user
+  user: name=fluentd shell=/bin/bash uid=2422 group=fluentd append=yes state=present
+
 - name: Ensure fluentd dir exists
-  file: path="{{fluentd_data}}/log" state=directory
+  file: path="{{fluentd_data}}/log" state=directory owner=2422 group=2422
 
 - name: Copy fluentd configuration
   copy:
@@ -10,7 +16,7 @@
 - name: Install fluentd with docker
   docker:
     name: fluent
-    image: fluent/fluentd
+    image: hourliert/fluentd-docker-image
     state: reloaded
     restart_policy: always
     pull: always
@@ -20,5 +26,3 @@
       FLUENTD_CONF: "fluent.conf"
     volumes:
       - "{{fluentd_data}}/log:/fluentd/log"
-
-# partial support. waiting for ansible 2.0 to support log_driver http://docs.ansible.com/ansible/docker_module.html

@@ -30,6 +30,7 @@
     image: sameersbn/gitlab
     restart_policy: always
     pull: always
+    log_driver: fluentd
     links:
       - "redis:redisio"
       - "postgresql:postgresql"

@@ -16,6 +16,7 @@
     name: plex
     image: wernight/plex-media-server
     pull: always
+    log_driver: fluentd
     ports:
       - "32400:32400"
     volumes:

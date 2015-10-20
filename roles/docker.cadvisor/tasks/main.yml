@@ -6,7 +6,7 @@
     state: reloaded
     restart_policy: always
     pull: always
-    # log_driver: fluentd
+    log_driver: fluentd
     expose: 
       - 8080
     env:
