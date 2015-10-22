@@ -2,6 +2,7 @@
 - name: Ensure OpenVPN dir exists
   file: path="{{openvpn_data}}" state=directory
 
+
 - name: Install OpenVPN via docker
   docker:
     name: openvpn
@@ -22,6 +23,8 @@
 # need to run (to gen keys)
 # docker run -v "{{openvpn_data}}:/etc/openvpn" --rm kylemanna/openvpn ovpn_genconfig -u udp://{{openvpn_hostname}}
 # docker run -v "{{openvpn_data}}:/etc/openvpn" --rm -it kylemanna/openvpn ovpn_initpki
-# and to get client config
+# run the server (ie. run this ansible role)
+# generate a client configuration
 # docker run -v "{{openvpn_data}}:/etc/openvpn" --rm -it kylemanna/openvpn easyrsa build-client-full {{client_name}} nopass
+# and to get client config
 # docker run -v "{{openvpn_data}}:/etc/openvpn" --rm kylemanna/openvpn ovpn_getclient {{client_name}} > {{client_name}}.ovpn

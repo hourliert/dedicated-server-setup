@@ -7,7 +7,3 @@
   roles:
     - docker.postgresql
     - docker.gogs
-  vars_prompt:
-    - name: "smtp_gogs_password"
-      prompt: "git@cnode.fr password"
-      private: yes
