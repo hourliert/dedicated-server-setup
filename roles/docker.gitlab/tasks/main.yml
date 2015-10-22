@@ -1,4 +1,13 @@
 ---
+- name: Create Gitlab group
+  group: name=gitlab state=present gid=2022
+
+- name: Create Gitlab user
+  user: name=gitlab shell=/bin/bash uid=2022 group=gitlab append=yes state=present
+
+- name: Ensure Gitlab dir exists
+  file: path="{{gitlab_data}}" state=directory owner=2022 group=2022
+
 - name: Create Gitlab DB
   postgresql_db:
     login_host: "0.0.0.0"
@@ -22,6 +31,8 @@
   copy: 
     src: ssl/gitlab/
     dest: "{{nginx_data}}/ssl/"
+    owner: root
+    group: root
 
 - name: Install Gitlab via Docker
   docker:
@@ -39,6 +50,8 @@
       - "10022:22"
     env:
       VIRTUAL_HOST: "{{gitlab_hostname}}"
+      USERMAP_UID: 2022
+      USERMAP_GID: 2022
       GITLAB_HOST: "{{ gitlab_hostname }}"
       GITLAB_PORT: 443
       GITLAB_HTTPS: true

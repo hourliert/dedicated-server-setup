@@ -1,4 +1,13 @@
 ---
+- name: Create postgres group
+  group: name=postgres state=present gid=1543
+
+- name: Create postgres user
+  user: name=postgres shell=/bin/bash uid=999 group=postgres append=yes state=present
+
+- name: Ensure postgres dir exists
+  file: path="{{postgresql_data}}" state=directory owner=postgres group=postgres
+
 - name: Install Postgresql via Docker
   docker:
     state: started

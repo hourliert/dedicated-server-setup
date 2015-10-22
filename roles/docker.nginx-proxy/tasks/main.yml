@@ -1,9 +1,9 @@
 ---
 - name: Ensure nginx data dir exists
-  file: path="{{nginx_data}}" state=directory
+  file: path="{{nginx_data}}" state=directory owner=www-data group=www-data
 
 - name: Ensure nginx ssl dirs exists
-  file: path="{{nginx_data}}/{{item}}" state=directory
+  file: path="{{nginx_data}}/{{item}}" state=directory owner=www-data group=www-data
   with_items:
      - ssl
      - conf
@@ -14,14 +14,24 @@
   copy:
     src: proxy.conf
     dest: "{{nginx_data}}/conf/proxy.conf"
+    owner: www-data
+    group: www-data
+
+- name: Create docker-gen group
+  group: name=docker-gen state=present gid=7777
+
+- name: Create docker-gen user
+  user: name=docker-gen shell=/bin/bash uid=7777 group=docker-gen append=yes state=present
 
 - name: Ensure docker-gen dir exists
-  file: path="{{docker_gen_data}}" state=directory  
+  file: path="{{docker_gen_data}}" state=directory owner=docker-gen group=docker-gen 
 
 - name: Copy docker-gen nginx template
   copy:
     src: nginx.tmpl
     dest: "{{docker_gen_data}}/nginx.tmpl"
+    owner: docker-gen 
+    group: docker-gen 
 
 - name: Install nginx-proxy
   docker:

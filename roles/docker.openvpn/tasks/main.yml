@@ -1,7 +1,12 @@
 ---
-- name: Ensure OpenVPN dir exists
-  file: path="{{openvpn_data}}" state=directory
+- name: Create openvpn group
+  group: name=openvpn state=present gid=1200
 
+- name: Create openvpn user
+  user: name=openvpn shell=/bin/bash uid=1200 group=openvpn append=yes state=present
+
+- name: Ensure OpenVPN dir exists
+  file: path="{{openvpn_data}}" state=directory owner=openvpn group=openvpn
 
 - name: Install OpenVPN via docker
   docker:

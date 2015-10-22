@@ -1,4 +1,13 @@
 ---
+- name: Create Gitlab group
+  group: name=gitlab state=present gid=2022
+
+- name: Create Gitlab user
+  user: name=gitlab shell=/bin/bash uid=2022 group=gitlab append=yes state=present
+
+- name: Ensure Gitlab dir exists
+  file: path="{{gitlab_ci_multi_data}}" state=directory owner=2022 group=2022
+
 - name: Install Gitlab Multiple Ci Runner via Docker
   docker:
     state: reloaded
