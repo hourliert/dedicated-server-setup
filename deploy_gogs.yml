@@ -1,0 +1,13 @@
+---
+- name: Install Gogs
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.postgresql
+    - docker.gogs
+  vars_prompt:
+    - name: "smtp_gogs_password"
+      prompt: "git@cnode.fr password"
+      private: yes

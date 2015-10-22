@@ -83,3 +83,10 @@ torrent_download: 5120
 # plex
 plex_data: /data/plex
 plex_hostname: plex.cnode.fr
+
+# gogs
+gogs_hostname: git.cnode.fr
+gogs_data: /data/gogs
+gogs_db_name: gogs
+gogs_db_user: gogs
+gogs_db_password: xxxxx
