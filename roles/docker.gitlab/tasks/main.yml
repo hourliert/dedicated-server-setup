@@ -1,4 +1,14 @@
 ---
+- name: Ensure nginx ssl dirs exists
+  file: path="{{nginx_data}}/{{item}}" state=directory
+  with_items:
+     - vhost.d
+
+- name: Copy vhost configuration
+  copy:
+    src: git.cnode.fr
+    dest: "{{nginx_data}}/vhost.d/git.cnode.fr"
+
 - name: Create Gitlab group
   group: name=gitlab state=present gid=2022
 
@@ -56,6 +66,7 @@
       GITLAB_PORT: 443
       GITLAB_HTTPS: true
       GITLAB_SSH_PORT: 10022
+      NGINX_MAX_UPLOAD_SIZE: 100m
       GITLAB_SECRETS_DB_KEY_BASE: "{{ gitlab_secrets_db_key_pass }}"
       DB_NAME: "{{ gitlab_db_name }}"
       DB_USER: "{{ gitlab_db_user }}"
