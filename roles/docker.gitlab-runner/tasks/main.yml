@@ -24,9 +24,10 @@
 - name: Register the runner
   shell: >
     docker exec ci-runner gitlab-ci-multi-runner register
-    --non-interactive
-    --url "{{gitlab_ci_url}}"
-    --registration-token "{{runner_token}}"
-    --description "{{runner_name}}"
+    -n
+    -u "{{gitlab_ci_url}}"
+    -r "{{runner_token}}"
+    --name "{{runner_name}}"
     --executor "docker"
-    --docker-image "node:4.1"
+    --docker-image "node:*"
+    --tag-list "docker,node"
