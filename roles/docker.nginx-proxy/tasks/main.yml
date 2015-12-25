@@ -9,6 +9,7 @@
      - conf
      - vhost.d
      - htpasswd
+     - letsencrypt
 
 - name: Copy default configuration
   copy:
@@ -54,6 +55,7 @@
       - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"
       - "{{nginx_data}}/vhost.d:/etc/nginx/vhost.d"
       - "{{nginx_data}}/htpasswd:/etc/nginx/htpasswd"
+      - "{{nginx_data}}/letsencrypt:/tmp/letsencrypt-auto"
 
 - name: Install docker-gen
   docker:
