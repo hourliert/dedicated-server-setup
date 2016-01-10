@@ -1,0 +1,34 @@
+[
+  {
+    "id": "deploy-versatile",
+    "execute-command": "/webhook/scripts/deploy.sh",
+    "command-working-directory": "/webhook/tmp",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "gitUrl"
+      },
+      {
+        "source": "payload",
+        "name": "deployKey"
+      }
+    ]
+  },
+  {
+    "id": "build-image",
+    "execute-command": "/webhook/scripts/build-image.sh",
+    "command-working-directory": "/webhook/tmp",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "gitUrl"
+      },
+      {
+        "source": "payload",
+        "name": "deployKey"
+      }
+    ]
+  }
+]

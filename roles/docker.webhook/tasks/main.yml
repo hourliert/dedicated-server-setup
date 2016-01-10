@@ -1,0 +1,53 @@
+---
+- name: Ensure webhook dir exists
+  file: path="{{webhook_data}}" state=directory
+
+- name: Ensure webhook dirs exists
+  file: path="{{webhook_data}}/{{item}}" state=directory
+  with_items:
+     - scripts
+     - tmp
+
+- name: Copy go webhook Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "{{ webhook_data }}/Dockerfile"
+
+- name: Copy webhook config
+  copy:
+    src: config.json
+    dest: "{{ webhook_data }}/config.json"
+
+- name: Copy webhook scripts
+  copy:
+    mode: 755
+    src: "scripts/{{ item }}.sh"
+    dest: "{{ webhook_data }}/scripts/{{ item }}"
+  with_items:
+    - deploy
+    - build-image
+
+- name: Build Go Webhook Image
+  docker_image:
+    path: "{{ webhook_data }}"
+    name: webhook-image
+    state: build
+
+- name: Install Go Webhook
+  docker:
+    state: reloaded
+    restart_policy: always
+    name: webhook
+    image: webhook-image
+    expose:
+      - 9000
+    volumes:
+      - "{{ webhook_data }}/config.json:/webhook/config.json"
+      - "{{ webhook_data }}/scripts:/webhook/scripts"
+      - "{{ webhook_data }}/tmp:/webhook/tmp"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/usr/bin/docker:/usr/bin/docker:ro"
+      - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro"
+      - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:ro"
+    env:
+      VIRTUAL_HOST: "{{ webhook_hostname }}"

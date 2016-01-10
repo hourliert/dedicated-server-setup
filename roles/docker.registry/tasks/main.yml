@@ -1,0 +1,48 @@
+---
+- name: Ensure registry data path exists
+  file: path="{{ registry_data }}" state=directory
+
+- name: Ensure sub data path exists
+  file: path="{{ registry_data }}/{{item}}" state=directory
+  with_items:
+    - data
+
+- name: Copy htpasswd file
+  copy:
+    src: htpasswd_registry.cnode.fr
+    dest: "{{nginx_data}}/htpasswd/registry.cnode.fr"
+
+- name: Copy ssl certificates
+  copy: 
+    src: "ssl/{{item}}/"
+    dest: "{{nginx_data}}/ssl/"
+  with_items:
+    - registry
+    - hub
+
+- name: Install Registry via Docker
+  docker:
+    state: reloaded
+    name: registry
+    image: registry:2
+    restart_policy: always
+    expose:
+      - "{{ registry_port }}"
+    env:
+      VIRTUAL_HOST: "{{ registry_hostname }}"
+    volumes:
+      - "{{ registry_data }}/data:/var/lib/registry"
+
+- name: Install RegistryUI via Docker
+  docker:
+    state: reloaded
+    name: hub
+    image: konradkleine/docker-registry-frontend:v2
+    restart_policy: always
+    expose:
+      - 80
+    env:
+      ENV_DOCKER_REGISTRY_HOST: "{{ registry_hostname }}"
+      ENV_DOCKER_REGISTRY_PORT: "443"
+      ENV_DOCKER_REGISTRY_USE_SSL: 1
+      VIRTUAL_HOST: "{{ registryui_hostname }}"

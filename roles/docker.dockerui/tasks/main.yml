@@ -10,7 +10,7 @@
     src: htpasswd_docker.cnode.fr
     dest: "{{nginx_data}}/htpasswd/docker.cnode.fr"
 
-- name: Copy htpasswd file
+- name: Copy vhost file
   copy:
     src: vhost_docker.cnode.fr
     dest: "{{nginx_data}}/vhost.d/docker.cnode.fr"

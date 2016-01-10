@@ -56,6 +56,7 @@
       - "{{nginx_data}}/vhost.d:/etc/nginx/vhost.d"
       - "{{nginx_data}}/htpasswd:/etc/nginx/htpasswd"
       - "{{nginx_data}}/letsencrypt:/tmp/letsencrypt-auto"
+      - "/usr/share/nginx/html"
 
 - name: Install docker-gen
   docker:
@@ -72,3 +73,4 @@
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - "{{docker_gen_data}}:/etc/docker-gen/templates"
+
