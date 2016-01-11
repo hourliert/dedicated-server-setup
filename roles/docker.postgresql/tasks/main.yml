@@ -10,9 +10,9 @@
 
 - name: Install Postgresql via Docker
   docker:
-    state: started
+    state: reloaded
     name: postgresql
-    image: postgres
+    image: postgres:9.4
     restart_policy: always
     pull: always
     # log_driver: fluentd
