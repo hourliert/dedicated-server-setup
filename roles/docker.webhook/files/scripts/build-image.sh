@@ -47,7 +47,7 @@ cat ~/.ssh/known_hosts
 
 
 echo "Cloning"
-git clone $1 "project${random_id}"
+git clone -b "$image_version" $1 "project${random_id}"
 
 
 echo "Setup Docker Registry"
@@ -57,22 +57,20 @@ docker login -e "$registry_email" -u "$registry_login" -p "$registry_password" "
 echo "Building"
 cd "./project${random_id}"
 docker build -t "project${random_id}" .
-
+echo "${image_version} is latest. Building latest image."
 docker tag -f "project${random_id}" "${registry_host}/${image_name}:${image_version}"
 docker push "${registry_host}/${image_name}:${image_version}"
-
-if [ "$image_version" != "latest" ]; then
-  echo "${image_version} was not latest. Building latest image."
+if [ "$image_version" != "develop" ]; then
   docker tag -f "project${random_id}" "${registry_host}/${image_name}:latest"
-  docker push "${registry_host}/${image_name}"
+  docker push "${registry_host}/${image_name}:latest"
 fi
 
 
 echo "Cleaning"
 docker logout "$registry"
-docker rmi "${registry_host}/${image_name}:latest"
-if [ "$image_version" != "latest" ]; then
-  docker rmi "${registry_host}/${image_name}:${image_version}"
+docker rmi "${registry_host}/${image_name}:${image_version}"
+if [ "$image_version" != "develop" ]; then
+  docker rmi "${registry_host}/${image_name}:latest"  
 fi
 docker rmi "project${random_id}"
 cd ..

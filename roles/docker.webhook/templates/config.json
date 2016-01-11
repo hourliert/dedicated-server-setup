@@ -117,6 +117,10 @@
       {
         "source": "payload",
         "name": "projectName"
+      },
+      {
+        "source": "payload",
+        "name": "imageVersion"
       }
     ]
   }
