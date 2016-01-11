@@ -22,7 +22,7 @@
           "match":
           {
             "type": "value",
-            "value": "{{ webhook_token }}",
+            "value": "{{ webhook_builder_token }}",
             "parameter":
             {
               "source": "payload",
@@ -79,7 +79,7 @@
           "match":
           {
             "type": "value",
-            "value": "{{ webhook_token }}",
+            "value": "{{ webhook_deploy_token }}",
             "parameter":
             {
               "source": "payload",

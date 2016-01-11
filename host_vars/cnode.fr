@@ -94,7 +94,8 @@ gogs_db_password: xxxxx
 # webhook
 webhook_data: /data/webhook
 webhook_hostname: webhook.cnode.fr
-webhook_token: xxxxx
+webhook_deploy_token: xxxxx
+webhook_builder_token: xxxxx
 
 # registry
 registry_hostname: registry.cnode.fr
