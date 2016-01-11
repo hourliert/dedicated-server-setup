@@ -1,43 +1,80 @@
 #!/bin/bash
 
+. ../scripts/uri-parser.sh
+
+
+echo "Ready to rock"
 git_url=$1
 deploy_key=`echo -n $2 | base64 -d`
+registry=$3
+registry_login=$4
+registry_password=$5
+registry_email=$6
+image_name=$7
+image_version=$8
+random_id=$[ 1 + $[ RANDOM % 10000000 ]]
 
-echo "Setup"
+if [ -z "$git_url" ]; then exit 1; fi
+if [ -z "$deploy_key" ]; then exit 1; fi
+if [ -z "$registry" ]; then exit 1; fi
+if [ -z "$registry_login" ]; then exit 1; fi
+if [ -z "$registry_password" ]; then exit 1; fi
+if [ -z "$registry_email" ]; then exit 1; fi
+if [ -z "$image_name" ]; then exit 1; fi
+if [ -z "$image_version" ]; then exit 1; fi
+
+
+echo "Parsing arguments"
+uri_parser "$git_url" || { echo "Malformed Git URL!"; exit 2; }
+registry_host=$(basename $registry)
+
+
+echo "Setup SSH"
 # ssh config
 mkdir -p ~/.ssh
 echo "$deploy_key" >> ~/.ssh/id_rsa
 chmod 400 ~/.ssh/id_rsa
 cat >> ~/.ssh/config <<EOF
-Host git.wid.la
-    HostName git.wid.la
-    User git
+Host ${uri_host}
+    HostName ${uri_host}
+    User ${uri_user}
     IdentitiesOnly yes
-    Port 10022
+    Port ${uri_port}
     IdentityFile ~/.ssh/id_rsa
 EOF
-ssh-keyscan -p 10022 -H git.wid.la >> ~/.ssh/known_hosts
+ssh-keyscan -p $uri_port -H $uri_host >> ~/.ssh/known_hosts
 cat ~/.ssh/known_hosts
 
+
 echo "Cloning"
-git clone $1 "project"
+git clone $1 "project${random_id}"
+
+
+echo "Setup Docker Registry"
+docker login -e "$registry_email" -u "$registry_login" -p "$registry_password" "$registry"
+
 
 echo "Building"
-cd ./project
-docker build -t tmp-image .
-docker login -e 'build@git.wid.la' -u 'thomas' -p '123456' registry.wid.la:5000
+cd "./project${random_id}"
+docker build -t "project${random_id}" .
 
-docker tag tmp-image registry.wid.la:5000/tmp-image:latest
-docker push -f registry.wid.la:5000/tmp-image:latest
+docker tag -f "project${random_id}" "${registry_host}/${image_name}:${image_version}"
+docker push "${registry_host}/${image_name}:${image_version}"
+
+if [ "$image_version" != "latest" ]; then
+  echo "${image_version} was not latest. Building latest image."
+  docker tag -f "project${random_id}" "${registry_host}/${image_name}:latest"
+  docker push "${registry_host}/${image_name}"
+fi
 
 
 echo "Cleaning"
-docker logout registry.wid.la:5000
-docker rmi tmp-image
-# clean ssh
-rm -rf ~/.ssh
-
-# clean tmp
+docker logout "$registry"
+docker rmi "${registry_host}/${image_name}:latest"
+if [ "$image_version" != "latest" ]; then
+  docker rmi "${registry_host}/${image_name}:${image_version}"
+fi
+docker rmi "project${random_id}"
 cd ..
-rm -rf *
-
+rm -rf "project${random_id}"
+rm -rf ~/.ssh

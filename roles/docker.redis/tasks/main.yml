@@ -6,7 +6,7 @@
     image: redis
     restart_policy: always
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.redis"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.redis"
     # ports:
     #   - "{{ redis_port }}:6379"

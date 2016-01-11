@@ -1,0 +1,1 @@
+add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;

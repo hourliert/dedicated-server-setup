@@ -22,11 +22,13 @@
     name: dockerui
     image: dockerui/dockerui
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.dockerui"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.dockerui"
     expose:
       - 9000
     env:
       VIRTUAL_HOST: "{{dockerui_hostname}}"
+      LETSENCRYPT_HOST: "{{dockerui_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

@@ -37,6 +37,7 @@
     priv: "ALL"
     role_attr_flags: CREATEDB
 
+# wait for letsencryt
 - name: Copy ssl certificates
   copy: 
     src: ssl/gitlab/
@@ -51,8 +52,8 @@
     image: sameersbn/gitlab
     restart_policy: always
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.gitlab"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.gitlab"
     links:
       - "redis:redisio"
       - "postgresql:postgresql"
@@ -60,6 +61,8 @@
       - "10022:22"
     env:
       VIRTUAL_HOST: "{{gitlab_hostname}}"
+      LETSENCRYPT_HOST: "{{gitlab_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
       USERMAP_UID: 2022
       USERMAP_GID: 2022
       GITLAB_HOST: "{{ gitlab_hostname }}"

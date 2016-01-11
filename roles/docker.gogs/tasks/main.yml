@@ -30,8 +30,8 @@
     image: gogs/gogs
     restart_policy: always
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.gogs"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.gogs"
     expose:
       - 3000
     ports:

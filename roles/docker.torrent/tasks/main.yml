@@ -9,13 +9,15 @@
     restart_policy: always
     image: kfei/docktorrent
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.torrent"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.torrent"
     tty: true
     ports:
       - "45566:45566"
     env:
       VIRTUAL_HOST: "{{torrent_hostname}}"
+      LETSENCRYPT_HOST: "{{torrent_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
       UPLOAD_RATE: "{{torrent_upload}}"
       DOWNLOAD_RATE: "{{torrent_download}}"
     volumes:

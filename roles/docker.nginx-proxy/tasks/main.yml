@@ -2,14 +2,12 @@
 - name: Ensure nginx data dir exists
   file: path="{{nginx_data}}" state=directory owner=www-data group=www-data
 
-- name: Ensure nginx ssl dirs exists
+- name: Ensure nginx dirs exists
   file: path="{{nginx_data}}/{{item}}" state=directory owner=www-data group=www-data
   with_items:
-     - ssl
      - conf
      - vhost.d
      - htpasswd
-     - letsencrypt
 
 - name: Copy default configuration
   copy:
@@ -18,31 +16,13 @@
     owner: www-data
     group: www-data
 
-- name: Create docker-gen group
-  group: name=docker-gen state=present gid=7777
-
-- name: Create docker-gen user
-  user: name=docker-gen shell=/bin/bash uid=7777 group=docker-gen append=yes state=present
-
-- name: Ensure docker-gen dir exists
-  file: path="{{docker_gen_data}}" state=directory owner=docker-gen group=docker-gen 
-
-- name: Copy docker-gen nginx template
-  copy:
-    src: nginx.tmpl
-    dest: "{{docker_gen_data}}/nginx.tmpl"
-    owner: docker-gen 
-    group: docker-gen 
-
 - name: Install nginx-proxy
   docker:
     name: nginx
-    image: nginx
+    image: jwilder/nginx-proxy
     state: reloaded
     pull: always
     restart_policy: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.nginx-proxy"
     expose: 
       - 80
       - 443
@@ -50,27 +30,23 @@
       - "80:80"
       - "443:443"
     volumes:
-      - /tmp/nginx:/etc/nginx/conf.d
       - "{{nginx_data}}/ssl:/etc/nginx/certs"
       - "{{nginx_data}}/conf/proxy.conf:/etc/nginx/proxy.conf"
       - "{{nginx_data}}/vhost.d:/etc/nginx/vhost.d"
       - "{{nginx_data}}/htpasswd:/etc/nginx/htpasswd"
-      - "{{nginx_data}}/letsencrypt:/tmp/letsencrypt-auto"
+      - "/etc/nginx/vhost.d"
       - "/usr/share/nginx/html"
+      - /var/run/docker.sock:/tmp/docker.sock:ro
 
-- name: Install docker-gen
+- name: Install docker letsencrypt companion
   docker:
-    name: docker-gen
-    image: jwilder/docker-gen
+    name: letsencrypt-nginx-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion
     state: reloaded
     pull: always
     restart_policy: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.docker-gen"
-    command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:
       - nginx
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - "{{docker_gen_data}}:/etc/docker-gen/templates"
-
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{nginx_data}}/ssl:/etc/nginx/certs"

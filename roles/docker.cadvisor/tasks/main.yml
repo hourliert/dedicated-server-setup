@@ -6,12 +6,14 @@
     state: reloaded
     restart_policy: always
     pull: always
-    log_driver: fluentd
-    log_opt: "fluentd-tag=docker.cadvisor"
+    # log_driver: fluentd
+    # log_opt: "fluentd-tag=docker.cadvisor"
     expose: 
       - 8080
     env:
       VIRTUAL_HOST: "{{cadvisor_host}}"
+      LETSENCRYPT_HOST: "{{cadvisor_host}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
     volumes:
       # - /:/rootfs:ro
       - /var/run:/var/run:rw

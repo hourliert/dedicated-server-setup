@@ -1,0 +1,123 @@
+[
+  {
+    "id": "build-image",
+    "execute-command": "/data/webhook/scripts/build-image.sh",
+    "command-working-directory": "/data/webhook/tmp",
+    "include-command-output-in-response": true,
+    "trigger-rule": {
+      "and": [
+        {
+          "match":
+          {
+            "type": "regex",
+            "regex": ".+",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "imageVersion"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "{{ webhook_token }}",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "webhookToken"
+            }
+          }
+        }
+      ]
+    },
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "gitUrl"
+      },
+      {
+        "source": "payload",
+        "name": "deployKey"
+      },
+      {
+        "source": "payload",
+        "name": "registry"
+      },
+      {
+        "source": "payload",
+        "name": "registryLogin"
+      },
+      {
+        "source": "payload",
+        "name": "registryPassword"
+      },
+      {
+        "source": "payload",
+        "name": "registryEmail"
+      },
+      {
+        "source": "payload",
+        "name": "imageName"
+      },
+      {
+        "source": "payload",
+        "name": "imageVersion"
+      }
+    ]
+  },
+  {
+    "id": "deploy",
+    "execute-command": "/data/webhook/scripts/deploy.sh",
+    "command-working-directory": "/data/webhook/tmp",
+    "include-command-output-in-response": true,
+    "trigger-rule": {
+      "and": [
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "{{ webhook_token }}",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "webhookToken"
+            }
+          }
+        }
+      ]
+    },
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "gitUrl"
+      },
+      {
+        "source": "payload",
+        "name": "deployKey"
+      },
+      {
+        "source": "payload",
+        "name": "registry"
+      },
+      {
+        "source": "payload",
+        "name": "registryLogin"
+      },
+      {
+        "source": "payload",
+        "name": "registryPassword"
+      },
+      {
+        "source": "payload",
+        "name": "registryEmail"
+      },
+      {
+        "source": "payload",
+        "name": "projectName"
+      }
+    ]
+  }
+]

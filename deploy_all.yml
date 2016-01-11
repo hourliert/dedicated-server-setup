@@ -10,3 +10,5 @@
 - include: deploy_owncloud.yml
 - include: deploy_plex.yml
 - include: deploy_torrent.yml
+- include: deploy_registry.yml
+- include: deploy_webhook.yml

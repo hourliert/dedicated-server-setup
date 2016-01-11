@@ -1,6 +1,6 @@
 # global
 user: thomashourlier
-root_data_foler: /data
+root_data_folder: /data
 
 # dockerui
 dockerui_hostname: docker.cnode.fr
@@ -90,3 +90,15 @@ gogs_data: /data/gogs
 gogs_db_name: gogs
 gogs_db_user: gogs
 gogs_db_password: xxxxx
+
+# webhook
+webhook_data: /data/webhook
+webhook_hostname: webhook.cnode.fr
+webhook_token: xxxxx
+
+# registry
+registry_hostname: registry.cnode.fr
+registry_data: /data/registry
+
+# letsencrypt
+letsencrypt_email: hourliert@gmail.com

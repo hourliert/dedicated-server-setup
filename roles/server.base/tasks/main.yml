@@ -1,6 +1,6 @@
 ---
 - name: Create data structure
-  file: path="{{ root_data_foler }}" owner=root group=root mode=0755 state=directory
+  file: path="{{ root_data_folder }}" owner=root group=root mode=0755 state=directory
 
 # Make sure system is up to date.
 - name: Update System Packages List and Installed Packages

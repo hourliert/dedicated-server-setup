@@ -1,31 +1,63 @@
 ---
+- name: Create webhook group
+  group: name=webhook state=present gid=8888
+
+- name: Create webhook user
+  user: name=webhook shell=/bin/bash uid=8888 group=webhook append=yes state=present
+
 - name: Ensure webhook dir exists
-  file: path="{{webhook_data}}" state=directory
+  file: 
+    path: "{{webhook_data}}" 
+    state: directory
+    owner: webhook 
+    group: webhook
 
 - name: Ensure webhook dirs exists
-  file: path="{{webhook_data}}/{{item}}" state=directory
+  file: 
+    path: "{{webhook_data}}/{{item}}" 
+    state: directory 
+    owner: webhook 
+    group: webhook
   with_items:
      - scripts
      - tmp
 
-- name: Copy go webhook Dockerfile
-  copy:
-    src: Dockerfile
-    dest: "{{ webhook_data }}/Dockerfile"
+- name: Copy basic files
+  template:
+    src: "{{item}}"
+    dest: "{{ webhook_data }}/{{item}}"
+    owner: webhook 
+    group: webhook
+  with_items:
+    - Dockerfile
+    - config.json
 
-- name: Copy webhook config
+- name: Copy docker-compose script
   copy:
-    src: config.json
-    dest: "{{ webhook_data }}/config.json"
+    mode: 0755
+    src: "docker-compose.sh"
+    dest: "{{ webhook_data }}/docker-compose.sh"
+    owner: webhook 
+    group: webhook
 
 - name: Copy webhook scripts
   copy:
-    mode: 755
-    src: "scripts/{{ item }}.sh"
+    mode: 0755
+    src: "scripts/{{ item }}"
     dest: "{{ webhook_data }}/scripts/{{ item }}"
+    owner: webhook 
+    group: webhook
   with_items:
-    - deploy
-    - build-image
+    - deploy.sh
+    - build-image.sh
+    - uri-parser.sh
+
+- name: Copy vhost file
+  copy:
+    src: vhost_webhook.cnode.fr
+    dest: "{{nginx_data}}/vhost.d/webhook.cnode.fr"
+    owner: www-data 
+    group: www-data
 
 - name: Build Go Webhook Image
   docker_image:
@@ -33,6 +65,7 @@
     name: webhook-image
     state: build
 
+# wait for letsencrypt
 - name: Install Go Webhook
   docker:
     state: reloaded
@@ -42,12 +75,12 @@
     expose:
       - 9000
     volumes:
-      - "{{ webhook_data }}/config.json:/webhook/config.json"
-      - "{{ webhook_data }}/scripts:/webhook/scripts"
-      - "{{ webhook_data }}/tmp:/webhook/tmp"
+      - "{{ webhook_data }}:{{ webhook_data }}"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/usr/bin/docker:/usr/bin/docker:ro"
       - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro"
       - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:ro"
     env:
       VIRTUAL_HOST: "{{ webhook_hostname }}"
+      LETSENCRYPT_HOST: "{{webhook_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
