@@ -35,10 +35,12 @@
 - name: Copy docker-compose script
   copy:
     mode: 0755
-    src: "docker-compose.sh"
-    dest: "{{ webhook_data }}/docker-compose.sh"
+    src: "{{item}}"
+    dest: "{{ webhook_data }}/{{item}}"
     owner: webhook 
     group: webhook
+  with_items:
+    - docker-compose.sh
 
 - name: Copy webhook scripts
   copy:
@@ -51,6 +53,7 @@
     - deploy.sh
     - build-image.sh
     - uri-parser.sh
+    - utils.sh
 
 - name: Copy vhost file
   copy:

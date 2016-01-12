@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ../scripts/uri-parser.sh
+. ../scripts/utils.sh
 
 
 echo "Ready to rock"
@@ -13,6 +14,7 @@ registry_email=$6
 project_name=$7
 image_version=$8
 random_id=$[ 1 + $[ RANDOM % 10000000 ]]
+lock_dir="$HOME/docker.lock"
 
 if [ -z "$git_url" ]; then exit 1; fi
 if [ -z "$deploy_key" ]; then exit 1; fi
@@ -30,27 +32,15 @@ registry_host=$(basename $registry)
 
 
 echo "Setup SSH"
-# ssh config
-mkdir -p ~/.ssh
-echo "$deploy_key" >> ~/.ssh/id_rsa
-chmod 400 ~/.ssh/id_rsa
-cat >> ~/.ssh/config <<EOF
-Host ${uri_host}
-    HostName ${uri_host}
-    User ${uri_user}
-    IdentitiesOnly yes
-    Port ${uri_port}
-    IdentityFile ~/.ssh/id_rsa
-EOF
-ssh-keyscan -p $uri_port -H $uri_host >> ~/.ssh/known_hosts
-cat ~/.ssh/known_hosts
+setup_ssh
 
 
 echo "Cloning"
-git clone -b "$image_version" $1 "project${random_id}"
+git clone -b "$image_version" "${uri_schema}://project${random_id}${uri_path}" "project${random_id}"
 
 
 echo "Setup Docker Registry"
+lock
 docker login -e "$registry_email" -u "$registry_login" -p "$registry_password" "$registry"
 
 
@@ -59,9 +49,11 @@ cd "./project${random_id}"
 docker-compose -p "$project_name" up -d "$project_name"
 
 
-echo "Cleaning"
+echo "Remove registry"
 docker logout "$registry"
-cd ..
-rm -rf "project${random_id}"
-rm -rf ~/.ssh
+unlock
+
+
+echo "Cleaning"
+clean
 
