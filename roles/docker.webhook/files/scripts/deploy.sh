@@ -46,6 +46,7 @@ docker login -e "$registry_email" -u "$registry_login" -p "$registry_password" "
 
 echo "Running"
 cd "./project${random_id}"
+docker-compose -p "$project_name" pull --ignore-pull-failures "$project_name"
 docker-compose -p "$project_name" up -d "$project_name"
 
 
