@@ -4,11 +4,11 @@
   remote_user: "{{ user }}"
   become: yes
   become_method: sudo
-- include: deploy.yml
-- include: deploy_mailserver.yml
-- include: deploy_gitlab.yml
-- include: deploy_owncloud.yml
+# - include: deploy.yml
+# - include: deploy_mailserver.yml
+# - include: deploy_gitlab.yml
+# - include: deploy_owncloud.yml
 - include: deploy_plex.yml
-- include: deploy_torrent.yml
-- include: deploy_registry.yml
-- include: deploy_webhook.yml
+# - include: deploy_torrent.yml
+# - include: deploy_registry.yml
+# - include: deploy_webhook.yml

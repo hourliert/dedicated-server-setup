@@ -8,6 +8,7 @@
      - conf
      - vhost.d
      - htpasswd
+     - ssl
 
 - name: Copy default configuration
   copy:

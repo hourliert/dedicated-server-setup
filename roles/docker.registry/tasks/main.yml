@@ -31,12 +31,12 @@
     - registry.cnode.fr
 
 # wait for letsencrypt
-- name: Copy ssl certificates
-  copy: 
-    src: "ssl/{{item}}/"
-    dest: "{{nginx_data}}/ssl/"
-  with_items:
-    - registry
+# - name: Copy ssl certificates
+#   copy: 
+#     src: "ssl/{{item}}/"
+#     dest: "{{nginx_data}}/ssl/"
+#   with_items:
+#     - registry
 
 - name: Install Registry via Docker
   docker:
@@ -50,6 +50,7 @@
       VIRTUAL_HOST: "{{ registry_hostname }}"
       LETSENCRYPT_HOST: "{{registry_hostname}}"
       LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
+      REGISTRY_STORAGE_DELETE_ENABLED: true
     volumes:
       - "{{ registry_data }}/data:/var/lib/registry"
 

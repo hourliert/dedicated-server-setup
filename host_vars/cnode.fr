@@ -103,3 +103,22 @@ registry_data: /data/registry
 
 # letsencrypt
 letsencrypt_email: hourliert@gmail.com
+
+#mysql
+mysql_root_password: 8m5H9qtvtVB78GrU
+mysql_data: /data/mysql
+mysql_port: 3306
+
+
+# maths vouziers
+mathsvouziers_db : wp_maths
+mathsvouziers_user : maths
+mathsvouziers_mdp : xxxxx
+mathsvouziers_hostname: mathematiques-vouziers.fr
+
+# kcv08 vouziers
+kcv08_db : wp_kcv08
+kcv08_user : kcv08
+kcv08_mdp : xxxxx
+kcv08_hostname: kcv08.fr
+

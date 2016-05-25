@@ -1,0 +1,70 @@
+---
+- name: Create mathsvouziers DB
+  mysql_db:
+    login_host: "0.0.0.0"
+    login_password: "{{ mysql_root_password }}"
+    login_user: root
+    name: "{{ mathsvouziers_db }}"
+    state: present
+
+- name: Create mathsvouziers DB User
+  mysql_user:
+    login_host: "0.0.0.0"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ mathsvouziers_user }}"
+    password: "{{ mathsvouziers_mdp }}"
+    priv: "{{mathsvouziers_db}}.*:ALL"
+    host: "%"
+
+- name: Install Wordpress maths vouziers via Docker
+  docker:
+    name: mathsvouziers
+    image: wordpress
+    state: reloaded
+    restart_policy: always
+    pull: always
+    expose:
+      - 80
+    links:
+      - mysql:mysql
+    env:
+      VIRTUAL_HOST: "{{mathsvouziers_hostname}}"
+      WORDPRESS_DB_USER: "{{mathsvouziers_user}}"
+      WORDPRESS_DB_PASSWORD: "{{mathsvouziers_mdp}}"
+      WORDPRESS_DB_NAME: "{{mathsvouziers_db}}"
+
+- name: Create kcv08 DB
+  mysql_db:
+    login_host: "0.0.0.0"
+    login_password: "{{ mysql_root_password }}"
+    login_user: root
+    name: "{{ kcv08_db }}"
+    state: present
+
+- name: Create kcv08 DB User
+  mysql_user:
+    login_host: "0.0.0.0"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ kcv08_user }}"
+    password: "{{ kcv08_mdp }}"
+    priv: "{{kcv08_db}}.*:ALL"
+    host: "%"
+
+- name: Install Wordpress kcv08 vouziers via Docker
+  docker:
+    name: kcv08
+    image: wordpress
+    state: reloaded
+    restart_policy: always
+    pull: always
+    expose:
+      - 80
+    links:
+      - mysql:mysql
+    env:
+      VIRTUAL_HOST: "{{kcv08_hostname}}"
+      WORDPRESS_DB_USER: "{{kcv08_user}}"
+      WORDPRESS_DB_PASSWORD: "{{kcv08_mdp}}"
+      WORDPRESS_DB_NAME: "{{kcv08_db}}"

@@ -12,7 +12,7 @@
   docker:
     state: reloaded
     name: postgresql
-    image: postgres:9.4
+    image: sameersbn/postgresql:9.4-19
     restart_policy: always
     pull: always
     # log_driver: fluentd
@@ -20,7 +20,8 @@
     ports:
       - "{{ postgresql_port }}:5432"
     env:
-      POSTGRES_PASSWORD: "{{ postgresql_root_password }}"
+      DB_EXTENSION: pg_trgm
+      PG_PASSWORD: "{{ postgresql_root_password }}"
     volumes:
       - "{{ postgresql_data }}:/var/lib/postgresql/data"
 

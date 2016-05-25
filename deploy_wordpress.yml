@@ -1,0 +1,9 @@
+---
+- name: Install Wordpress mathematiques vouziers
+  hosts: park
+  remote_user: "{{ user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - docker.mysql
+    - docker.wordpress

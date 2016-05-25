@@ -68,7 +68,6 @@
     name: webhook-image
     state: build
 
-# wait for letsencrypt
 - name: Install Go Webhook
   docker:
     state: reloaded

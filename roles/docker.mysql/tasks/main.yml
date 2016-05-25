@@ -1,0 +1,25 @@
+---
+- name: Ensure mysql maths dir exists
+  file: path="{{mysql_data}}" state=directory
+
+- name: Install Mysql math vouziers via Docker
+  docker:
+    state: reloaded
+    name: mysql
+    image: mysql
+    restart_policy: always
+    pull: always
+    ports: 
+      - "{{mysql_port}}:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{mysql_root_password}}"
+    volumes:
+      - "{{mysql_data}}:/var/lib/mysql"
+
+- name: Install MysqlDB Python Module dependencies
+  apt:
+    name: python-mysqldb
+    state: present
+
+- name: Waiting for MysqlDB connection
+  wait_for: port="{{ mysql_port }}" delay=5

@@ -20,7 +20,7 @@
     state: reloaded
     restart_policy: always
     name: dockerui
-    image: dockerui/dockerui
+    image: abh1nav/dockerui
     pull: always
     # log_driver: fluentd
     # log_opt: "fluentd-tag=docker.dockerui"

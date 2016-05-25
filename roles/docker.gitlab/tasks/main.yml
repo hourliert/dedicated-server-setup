@@ -35,15 +35,15 @@
     db: "{{gitlab_db_name}}"
     password: "{{ gitlab_db_password }}"
     priv: "ALL"
-    role_attr_flags: CREATEDB
+    role_attr_flags: CREATEDB,SUPERUSER
 
 # wait for letsencryt
-- name: Copy ssl certificates
-  copy: 
-    src: ssl/gitlab/
-    dest: "{{nginx_data}}/ssl/"
-    owner: root
-    group: root
+# - name: Copy ssl certificates
+#   copy: 
+#     src: ssl/gitlab/
+#     dest: "{{nginx_data}}/ssl/"
+#     owner: root
+#     group: root
 
 - name: Install Gitlab via Docker
   docker:
