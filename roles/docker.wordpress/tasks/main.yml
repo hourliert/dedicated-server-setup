@@ -28,8 +28,12 @@
       - 80
     links:
       - mysql:mysql
+    volumes:
+      - "{{ mathsvouziers_data }}:/var/www/html"
     env:
       VIRTUAL_HOST: "{{mathsvouziers_hostname}}"
+      LETSENCRYPT_HOST: "{{mathsvouziers_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
       WORDPRESS_DB_USER: "{{mathsvouziers_user}}"
       WORDPRESS_DB_PASSWORD: "{{mathsvouziers_mdp}}"
       WORDPRESS_DB_NAME: "{{mathsvouziers_db}}"
@@ -63,8 +67,12 @@
       - 80
     links:
       - mysql:mysql
+    volumes:
+      - "{{ kcv08_data }}:/var/www/html"
     env:
       VIRTUAL_HOST: "{{kcv08_hostname}}"
+      LETSENCRYPT_HOST: "{{kcv08_hostname}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
       WORDPRESS_DB_USER: "{{kcv08_user}}"
       WORDPRESS_DB_PASSWORD: "{{kcv08_mdp}}"
       WORDPRESS_DB_NAME: "{{kcv08_db}}"
